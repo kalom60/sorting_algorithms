@@ -1,37 +1,36 @@
 #include "sort.h"
-
 /**
  * quick_sort - function that sorts an array
- * of integers using the quick sort algorithm
+ * of integers in ascending order using the
+ * quick sort algorithm
  *
  * @array: input arrray
- * @s: s of the array
+ * @size: size of the array
  * Return: no return
  */
-void quick_sort(int *array, size_t s)
+void quick_sort(int *array, size_t size)
 {
-	_quicksort(array, 0, s - 1, s);
+	_qsort(array, 0, size - 1, size);
 }
-
 /**
- * _quicksort - auxiliar function for the
+ * _qsort - auxiliar function for the
  * quick_sort function
  * @a: input arrray
- * @l: index for the first element
- * @h: index for the last element
- * @s: s of the array
+ * @low: index for the first element
+ * @high: index for the last element
+ * @size: size of the array
  * Return: no return
  */
-void _quicksort(int *a, int l, int h, int s)
+void _qsort(int *a, int low, int high, int size)
 {
 	int p, w, i;
 	int tmp;
 
-	if (l < h)
+	if (low < high)
 	{
-		p = h;
-		w = l;
-		for (i = l; i < h; i++)
+		p = high;
+		w = low;
+		for (i = low; i < high; i++)
 		{
 			if (a[i] < a[p])
 			{
@@ -40,7 +39,7 @@ void _quicksort(int *a, int l, int h, int s)
 					tmp = a[i];
 					a[i] = a[w];
 					a[w] = tmp;
-					print_array(a, s);
+					print_array(a, size);
 				}
 				w++;
 			}
@@ -50,10 +49,9 @@ void _quicksort(int *a, int l, int h, int s)
 			tmp = a[w];
 			a[w] = a[p];
 			a[p] = tmp;
-			print_array(a, s);
+			print_array(a, size);
 		}
-		_quicksort(a, l, w - 1, s);
-		_quicksort(a, w + 1, h, s);
+		_qsort(a, low, w - 1, size);
+		_qsort(a, w + 1, high, size);
 	}
 }
-
