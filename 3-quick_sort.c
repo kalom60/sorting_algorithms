@@ -1,57 +1,79 @@
 #include "sort.h"
+#include <stdio.h>
+
 /**
- * quick_sort - function that sorts an array
- * of integers in ascending order using the
- * quick sort algorithm
- *
- * @array: input arrray
+ * partition - finds the partition for the quicksort using the Lomuto scheme
+ * @array: array to sort
+ * @lo: lowest index of the partition to sort
+ * @hi: highest index of the partition to sort
  * @size: size of the array
- * Return: no return
+ *
+ * Return: index of the partition
+ */
+size_t partition(int *array, ssize_t lo, ssize_t hi, size_t size)
+{
+	ssize_t i, j;
+	int p, sw;
+
+	p = array[hi];
+	i = lo - 1;
+	for (j = lo; j < hi; j++)
+	{
+		if (array[j] < p)
+		{
+			i++;
+			if (i != j)
+			{
+				sw = array[i];
+				array[i] = array[j];
+				array[j] = sw;
+				print_array(array, size);
+			}
+		}
+	}
+	if (array[hi] < array[i + 1])
+	{
+		sw = array[i + 1];
+		array[i + 1] = array[hi];
+		array[hi] = sw;
+		print_array(array, size);
+	}
+	return (i + 1);
+}
+
+/**
+ * quicksort - sorts a partition of an array of integers
+ * @array: array to sort
+ * @lo: lowest index of the partition to sort
+ * @hi: highest index of the partition to sort
+ * @size: size of the array
+ *
+ * Return: void
+ */
+void quicksort(int *array, ssize_t lo, ssize_t hi, size_t size)
+{
+	ssize_t p;
+
+	if (lo < hi)
+	{
+		p = partition(array, lo, hi, size);
+		quicksort(array, lo, p - 1, size);
+		quicksort(array, p + 1, hi, size);
+
+	}
+}
+
+/**
+ * quick_sort - sorts an array of integers in ascending order using the
+ * Quick sort algorithm
+ * @array: The array to sort
+ * @size: The size of the array
+ *
+ * Return: void
  */
 void quick_sort(int *array, size_t size)
 {
-	_qsort(array, 0, size - 1, size);
-}
-/**
- * _qsort - auxiliar function for the
- * quick_sort function
- * @a: input arrray
- * @low: index for the first element
- * @high: index for the last element
- * @size: size of the array
- * Return: no return
- */
-void _qsort(int *a, int low, int high, int size)
-{
-	int p, w, i;
-	int tmp;
-
-	if (low < high)
-	{
-		p = high;
-		w = low;
-		for (i = low; i < high; i++)
-		{
-			if (a[i] < a[p])
-			{
-				if (i != w)
-				{
-					tmp = a[i];
-					a[i] = a[w];
-					a[w] = tmp;
-					print_array(a, size);
-				}
-				w++;
-			}
-		}
-		if (w != p && a[w] != a[p])
-		{
-			tmp = a[w];
-			a[w] = a[p];
-			a[p] = tmp;
-			print_array(a, size);
-		}
-		_qsort(a, low, w - 1, size);
-		_qsort(a, w + 1, high, size);
-	}
+	if (array == NULL || size < 2)
+		return;
+	quicksort(array, 0, size - 1, size);
 }
